@@ -3,3 +3,9 @@
 # Wing editer project file, so, ignore
 *.wpr
 *.wpu
+
+#pycharm project file
+.idea
+
+#python compile file
+*.cpython-34.pyc

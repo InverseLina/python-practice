@@ -23,11 +23,11 @@ class  File:
             raise Exception("Here has a error!")
         
     
-    #类实例的方法 
-    def changeFileExtension(self, oldEx, newEx):  
+    # 类实例的方法
+    def changeFileExtension(self, oldEx, newEx):
         File.ChangeFileExtension(self.operateUrl, oldEx, newEx)
         
-    #类方法          
+    # 类方法
     @classmethod  
     def class_foo(cls, flag):  
         print("executing class_foo({0}) and flag {1}".format(cls, flag))
