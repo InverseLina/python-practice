@@ -8,9 +8,9 @@ class A(object):
         print("init_for:",self.__class__)
     def __new__(cls, *args, **kwargs):
         print("new_for:",cls)
-        return object.__new__(cls, *args, **kwargs)
+        return object.__new__(cls)
 
-a = A()
+a = A("ww")
 print()
 
 class Foo(object):
@@ -33,8 +33,8 @@ class Bar(Foo):
     """
     #----------------------------------------------------------------------
     def __new__(cls, *args, **kwargs):
+        print("Call_new_Bar:",)
         obj = Car.__new__(cls, *args, **kwargs)
-        print("Call_new_Bar:", obj.__class__)
         return obj
     def __init__(self):
         print("Call_init_Bar:", self.__class__)

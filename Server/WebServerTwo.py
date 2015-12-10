@@ -2,11 +2,9 @@
 __author__ = 'Hinsteny'
 
 import socket
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
-    from io import BytesIO
+
+from io import StringIO
+from io import BytesIO
 
 import sys
 
@@ -40,21 +38,24 @@ class WSGIServer(object):
 
     def serve_forever(self):
         listen_socket = self.listen_socket
+        flag = 0
         while True:
             # New client connection
             self.client_connection, client_address = listen_socket.accept()
             # Handle one request and close the client connection. Then
             # loop over to wait for another client connection
+            print(flag)
             self.handle_one_request()
+            flag  = flag + 1
 
     def handle_one_request(self):
-        self.request_data = request_data = self.client_connection.recv(1024)
+        self.request_data = request_data = self.client_connection.recv(2048)
         # Print formatted request data a la 'curl -v'
         # print(''.join('&lt; {line}n'.format(line=line)  for line in request_data.splitlines() ))
         for line in request_data.splitlines():
             print(line)
 
-        print(type(request_data))
+        print("XXX", type(request_data))
         self.parse_request(request_data)
 
          # Construct environment dictionary using request data
@@ -68,8 +69,13 @@ class WSGIServer(object):
         self.finish_response(result)
 
     def parse_request(self, text):
-        request_line = text.decode("utf-8").splitlines()[0]
+        if len(text) == 0:
+            return
+        print(len(text), ":::", text.decode(encoding='UTF-8').splitlines())
+        request_line = text.decode(encoding='UTF-8').splitlines()[0]
         request_line = request_line.rstrip('rn')
+
+        print("===", request_line)
         # Break down the request line into components
         (self.request_method,  # GET
         self.path,            # /hello
@@ -85,7 +91,7 @@ class WSGIServer(object):
         # Required WSGI variables
         env['wsgi.version']      = (1, 0)
         env['wsgi.url_scheme']   = 'http'
-        env['wsgi.input']        = BytesIO(self.request_data)
+        env['wsgi.input']        = StringIO(self.request_data.decode(encoding='UTF-8'))
         env['wsgi.errors']       = sys.stderr
         env['wsgi.multithread']  = False
         env['wsgi.multiprocess'] = False
@@ -107,7 +113,7 @@ class WSGIServer(object):
         # To adhere to WSGI specification the start_response must return
         # a 'write' callable. We simplicity's sake we'll ignore that detail
         # for now.
-        # return self.finish_response
+        return self.finish_response
 
     def finish_response(self, result):
         try:
@@ -126,6 +132,7 @@ class WSGIServer(object):
             response = bytes(response, 'utf-8')
             self.client_connection.sendall(response)
         finally:
+            print("The response has bean finished!");
             self.client_connection.close()
 
 SERVER_ADDRESS = (HOST, PORT) = '', 8888

@@ -3,10 +3,11 @@
 import sys,pprint
 
 class Fruit(object):
-    
+
     def __init__(self, name = "name_fruit"):
+        print("init__"+name)
         self.name = name
-        
+
     def getName(self):
         return self.name
 
@@ -18,7 +19,7 @@ def test():
     name = f.getName()
     print(name)
     print("你好，世界！")
-    
+
 # Do test
 if __name__ == "__main__":
     test()
