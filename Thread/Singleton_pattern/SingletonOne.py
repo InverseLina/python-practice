@@ -5,6 +5,7 @@ __author__ = 'Hinsteny'
 # Set maximum recursion depth exceeded value
 sys.setrecursionlimit(100)
 
+
 class Singleton(object):
     """
     Implements the Singleton pattern by use /__new__/ method, this will be very simple
