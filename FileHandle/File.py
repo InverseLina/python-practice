@@ -21,22 +21,22 @@ class  File:
                 self.operateUrl = path
         else :
             raise Exception("Here has a error!")
-        
-    
+
+
     # 类实例的方法
     def changeFileExtension(self, oldEx, newEx):
         File.ChangeFileExtension(self.operateUrl, oldEx, newEx)
-        
+
     # 类方法
-    @classmethod  
-    def class_foo(cls, flag):  
+    @classmethod
+    def class_foo(cls, flag):
         print("executing class_foo({0}) and flag {1}".format(cls, flag))
-    
+
     #类的静态方法修改特定文件夹下的文件后缀名，采用递归的方法哈
     @staticmethod
     def  ChangeFileExtension(path, oldEx, newEx):
         ChangeFileExtension(path, oldEx, newEx)
-        
+
 #模块的静态方法修改特定文件夹下的文件后缀名，采用递归的方法哈
 def  ChangeFileExtension(path, oldEx, newEx):
     if os.path.exists(path):
@@ -48,11 +48,21 @@ def  ChangeFileExtension(path, oldEx, newEx):
             for fileName in os.listdir(path):
                 ChangeFileExtension(os.path.join(path,  fileName), oldEx, newEx)
     else :
-        raise Exception("Here has a error!")        
+        raise Exception("Here has a error!")
 
-        
-    
-    
+
+def deleteFolderRecurrence(folderPath):
+    if os.path.exists(folderPath):
+        if os.path.isfile(folderPath):
+            os.remove(folderPath)
+        elif os.path.isdir(folderPath):
+            for fileName in os.listdir(folderPath):
+                deleteFolderRecurrence(os.path.join(folderPath,  fileName))
+    else:
+        raise Exception("Here has a error!")
+
+
+
 # File test
 def test():
     pprint. pprint(sys.path)
@@ -61,7 +71,10 @@ def test():
     print(file.currentUrl)
     print(file.operateUrl)
     file.class_foo("love")
-    
+
+
 # Do test
 if __name__ == "__main__":
-    test()
+    # test()
+    print("wwww")
+    deleteFolderRecurrence(r"E:\github\Hinsteny\target")
